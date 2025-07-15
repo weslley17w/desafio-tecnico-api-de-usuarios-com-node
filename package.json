@@ -1,16 +1,17 @@
 {
   "name": "desafio-tecnico-api-de-usuarios-com-node",
   "type": "module",
-  "main": "build/index.js",
+  "main": "build/server.js",
   "scripts": {
     "build": "tsc",
-    "dev": "tsx --env-file .env src/index.ts",
-    "watch": "tsx --watch --env-file .env src/index.ts",
-    "start": "node --env-file .env build/index.js"
+    "dev": "tsx --env-file .env src/server.ts",
+    "watch": "tsx --watch --env-file .env src/server.ts",
+    "start": "node --env-file .env build/server.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
     "@eslint/json": "^0.13.0",
+    "@types/express": "^5.0.3",
     "@types/node": "^24.0.13",
     "eslint": "^9.31.0",
     "globals": "^16.3.0",
@@ -21,5 +22,8 @@
   },
   "engines": {
     "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
   }
 }
