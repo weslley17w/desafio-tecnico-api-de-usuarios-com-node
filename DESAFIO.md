@@ -2,13 +2,14 @@
 
 ## 📋 Objetivo
 
-Desenvolver uma API RESTful completa para gerenciamento de usuários utilizando *Node.js, **Express* e *PostgreSQL*, incluindo sistema de autenticação e CRUD de usuários.
+Desenvolver uma API RESTful completa para gerenciamento de usuários utilizando _Node.js, \*\*Express_ e _PostgreSQL_, incluindo sistema de autenticação e CRUD de usuários.
 
 ---
 
 ## 🎯 Requisitos Funcionais
 
 ### 1. CRUD de Usuários
+
 - Criar
 - Listar
 - Atualizar
@@ -19,6 +20,7 @@ Desenvolver uma API RESTful completa para gerenciamento de usuários utilizando 
 ## 🔧 Requisitos Técnicos
 
 ### Stack Obrigatória
+
 - Node.js (versão 16 ou superior)
 - Express.js (framework web)
 - JWT (autenticação)
@@ -29,13 +31,16 @@ Desenvolver uma API RESTful completa para gerenciamento de usuários utilizando 
 ## 🔐 Especificações de Segurança
 
 ### Autenticação
+
 - Senhas devem ser hashadas
 - JWT com expiração de 24 horas
 - Refresh token com expiração de 7 dias
-- Rate limiting: máximo *5 tentativas de login por IP a cada 15 minutos*
+- Rate limiting: máximo _5 tentativas de login por IP a cada 15 minutos_
 
 ### Validação de Senha
-A senha deve conter no mínimo *8 caracteres*, incluindo:
+
+A senha deve conter no mínimo _8 caracteres_, incluindo:
+
 - 1 letra maiúscula
 - 1 letra minúscula
 - 1 número
@@ -46,22 +51,26 @@ A senha deve conter no mínimo *8 caracteres*, incluindo:
 ## 📋 Critérios de Avaliação
 
 ### ✅ Funcionalidade
+
 - Todas as rotas funcionam corretamente
 - CRUD completo implementado
 - Sistema de login/logout funcional
 
 ### 🧠 Código
+
 - Código limpo e bem estruturado
 - Uso adequado de middlewares
 - Separação de responsabilidades
 - Tratamento de erros consistente
 
 ### 🔒 Segurança
+
 - Senhas hashadas corretamente
 - JWT implementado adequadamente
 - Validação de entrada
 
 ### 📝 Documentação
+
 - README.md completo
 
 ---
@@ -69,12 +78,14 @@ A senha deve conter no mínimo *8 caracteres*, incluindo:
 ## 🏆 Diferenciais (Pontos Extras)
 
 ### 🚀 Implementações Avançadas
+
 - Paginação nas listagens
 - Filtros e busca de usuários
 - Soft delete de usuários
 - Autorização de rotas
 
 ### 🧹 Qualidade de Código
+
 - ESLint configurado
 - Prettier para formatação
 
@@ -82,7 +93,7 @@ A senha deve conter no mínimo *8 caracteres*, incluindo:
 
 ## ⏰ Prazo de Entrega
 
-*5 dias úteis* a partir do recebimento do desafio.
+_5 dias úteis_ a partir do recebimento do desafio.
 
 ---
 
