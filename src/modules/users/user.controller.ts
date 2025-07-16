@@ -70,4 +70,19 @@ export class UserController {
       return res.status(500).json({ message: 'Erro interno do servidor.' });
     }
   }
+
+  async deleteUser(req: Request, res: Response): Promise<Response> {
+    try {
+      const userId = req.params.id as string;
+      const userService = new UserService();
+      await userService.deleteUser(userId);
+
+      return res.status(204).send();
+    } catch (error) {
+      if (error instanceof HttpException) {
+        return res.status(error.status).json({ message: error.message });
+      }
+      return res.status(500).json({ message: 'Erro interno do servidor.' });
+    }
+  }
 }

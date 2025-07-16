@@ -5,6 +5,7 @@ import {
   addUser,
   getAllUsers,
   updateUser,
+  deleteUser,
 } from '../../shared/database.js';
 import { CreateUserDto, paginatedUsers } from './user.dto.js';
 import { HttpException } from '../../shared/erros/HttpExeption.js';
@@ -80,5 +81,14 @@ export class UserService {
     const data = updateUser(id, updatedUser) as User;
 
     return data;
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    const user = getUser(id);
+    if (!user) {
+      throw new HttpException(404, 'Usuário não encontrado.');
+    }
+
+    deleteUser(id);
   }
 }
