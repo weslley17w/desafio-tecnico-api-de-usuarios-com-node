@@ -1,5 +1,12 @@
-import { User, getUserByEmail, addUser } from '../../shared/database.js';
-import { CreateUserDto } from './user.dto.js';
+import {
+  User,
+  getUserByEmail,
+  getUser,
+  addUser,
+  getAllUsers,
+  updateUser,
+} from '../../shared/database.js';
+import { CreateUserDto, paginatedUsers } from './user.dto.js';
 import { HttpException } from '../../shared/erros/HttpExeption.js';
 import { hash } from 'bcrypt';
 
@@ -21,5 +28,57 @@ export class UserService {
     addUser(newUser);
 
     return newUser;
+  }
+
+  async getAllUsers(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<paginatedUsers> {
+    const users = getAllUsers();
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const data = users.slice(startIndex, endIndex);
+
+    return {
+      page,
+      limit,
+      total: users.length,
+      data,
+    };
+  }
+
+  async getUserById(id: string): Promise<User | null> {
+    const user = getUser(id);
+    if (!user) {
+      throw new HttpException(404, 'Usuário não encontrado.');
+    }
+    return user;
+  }
+
+  async updateUser(
+    id: string,
+    updatedData: Partial<CreateUserDto>,
+  ): Promise<User | null> {
+    const user = getUser(id);
+    if (!user) {
+      throw new HttpException(404, 'Usuário não encontrado.');
+    }
+
+    if (updatedData.email && getUserByEmail(updatedData.email)) {
+      throw new HttpException(400, 'O campo email já está em uso.');
+    }
+
+    if (updatedData.password) {
+      updatedData.password = await hash(updatedData.password, 10);
+    }
+
+    const updatedUser: Partial<User> = {
+      ...user,
+      ...updatedData,
+    };
+
+    const data = updateUser(id, updatedUser) as User;
+
+    return data;
   }
 }
