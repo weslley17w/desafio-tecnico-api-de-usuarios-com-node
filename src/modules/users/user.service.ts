@@ -7,7 +7,7 @@ import {
   updateUser,
   deleteUser,
 } from '../../shared/database.js';
-import { CreateUserDto, paginatedUsers } from './user.dto.js';
+import { CreateUserDto, paginatedUsers, UserResponseDto } from './user.dto.js';
 import { HttpException } from '../../shared/erros/HttpExeption.js';
 import { hash } from 'bcrypt';
 
@@ -44,22 +44,31 @@ export class UserService {
       page,
       limit,
       total: users.length,
-      data,
+      data: data.map((user) => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      })),
     };
   }
 
-  async getUserById(id: string): Promise<User | null> {
+  async getUserById(id: string): Promise<UserResponseDto | null> {
     const user = getUser(id);
     if (!user) {
       throw new HttpException(404, 'Usuário não encontrado.');
     }
-    return user;
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
   }
 
   async updateUser(
     id: string,
     updatedData: Partial<CreateUserDto>,
-  ): Promise<User | null> {
+  ): Promise<UserResponseDto | null> {
     const user = getUser(id);
     if (!user) {
       throw new HttpException(404, 'Usuário não encontrado.');
@@ -80,7 +89,11 @@ export class UserService {
 
     const data = updateUser(id, updatedUser) as User;
 
-    return data;
+    return {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+    };
   }
 
   async deleteUser(id: string): Promise<void> {

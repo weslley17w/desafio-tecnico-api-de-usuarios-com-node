@@ -6,11 +6,13 @@ export type CreateUserDto = {
   password: string;
 };
 
+export type UserResponseDto = Omit<User, 'password'>;
+
 export type paginatedUsers = {
   page: number;
   limit: number;
   total: number;
-  data: User[];
+  data: UserResponseDto[];
 };
 
 export type UpdateUserDto = {
