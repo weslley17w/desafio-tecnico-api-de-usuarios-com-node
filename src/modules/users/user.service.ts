@@ -34,11 +34,25 @@ export class UserService {
   async getAllUsers(
     page: number = 1,
     limit: number = 10,
+    name: string | undefined = undefined,
+    email: string | undefined = undefined,
   ): Promise<paginatedUsers> {
     const users = getAllUsers();
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    const data = users.slice(startIndex, endIndex);
+    let data = users.slice(startIndex, endIndex);
+
+    if (name) {
+      data = data.filter((user) =>
+        user.name.toLowerCase().includes(name.toLowerCase()),
+      );
+    }
+
+    if (email) {
+      data = data.filter((user) =>
+        user.email.toLowerCase().includes(email.toLowerCase()),
+      );
+    }
 
     return {
       page,

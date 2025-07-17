@@ -27,8 +27,10 @@ export class UserController {
       const userService = new UserService();
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
+      const name = (req.query.name as string) || undefined;
+      const email = (req.query.email as string) || undefined;
 
-      const users = await userService.getAllUsers(page, limit);
+      const users = await userService.getAllUsers(page, limit, name, email);
       return res.status(200).json(users);
     } catch (error) {
       if (error instanceof HttpException) {
