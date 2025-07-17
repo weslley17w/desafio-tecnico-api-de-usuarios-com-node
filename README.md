@@ -3,6 +3,7 @@
 Esta é uma API RESTful para gerenciamento e autenticação de usuários, desenvolvida como parte de um desafio técnico.
 
 Para mais detalhes sobre os requisitos e especificações completas do desafio, por favor, consulte o arquivo:
+
 **[➡️ DESAFIO.MD](DESAFIO.md)**
 
 ## Tecnologias
@@ -54,7 +55,7 @@ Siga os passos abaixo para executar o projeto localmente.
     npm run dev
 ```
 
-  Por padrão servidor estará rodando na porta 3000
+Por padrão servidor estará rodando na porta 3000
 
 ## Scripts
 
@@ -72,3 +73,7 @@ Siga os passos abaixo para executar o projeto localmente.
 
 - npm run loadtest
   - Roda o teste de carga
+
+## Collection do Postman
+
+Você pode importar a collection do Postman para testar a API. A collection está localizada **[aqui](https://raw.githubusercontent.com/weslley17w/desafio-tecnico-api-de-usuarios-com-node/refs/heads/main/Desafio%20T%C3%A9cnico%20-%20API%20de%20Usu%C3%A1rios%20com%20Node.js.postman_collection.json?token=GHSAT0AAAAAADHKUAEAYCUKU6D255EF2HEM2DZD3PQ)**.
