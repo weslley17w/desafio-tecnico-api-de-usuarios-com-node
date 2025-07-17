@@ -60,7 +60,7 @@ Por padrão servidor estará rodando na porta 3000
 ## Scripts
 
 - npm run dev
-  - Inicia o servidor em modo de desenvolvimento usando ts-node-dev.
+  - Inicia o servidor em modo de desenvolvimento.
 
 - npm run watch
   - Inicia o servidor em modo de desenvolvimento com _recarga automática (hot-reload)_.
