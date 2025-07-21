@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  database:
+    image: postgres
+    container_name: db-desafio-tecnico
+    restart: always
+    ports:
+      - 5432:5432
+    env_file: .env
+    volumes:
+      - pgdata:/var/lib/db
+    network_mode: host
+  app:
+    build: .
+    container_name: desafio-tecnico
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    network_mode: host
+volumes:
+  pgdata:
+    driver: local
