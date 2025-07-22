@@ -1,5 +1,5 @@
 import { QueryInterface } from 'sequelize';
-import { User } from '../models/user.js';
+import { User } from '../models/index.js';
 import { hash } from 'bcrypt';
 
 interface Seed {

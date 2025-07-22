@@ -13,8 +13,8 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare name: string;
   declare email: string;
   declare password: string;
-  declare createdAt: CreationOptional<Date>;
-  declare updateAt: CreationOptional<Date>;
+  declare created_at: CreationOptional<Date>;
+  declare update_at: CreationOptional<Date>;
 }
 
 const attributes: ModelAttributes = {
@@ -32,7 +32,6 @@ const attributes: ModelAttributes = {
     allowNull: false,
     unique: true,
   },
-
   password: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -45,3 +44,5 @@ User.init(attributes, {
   tableName: 'users',
   timestamps: true,
 });
+
+export default User;
