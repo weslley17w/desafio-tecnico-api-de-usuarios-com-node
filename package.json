@@ -9,11 +9,12 @@
     "start": "node --env-file .env build/server.js",
     "format": "prettier --write .",
     "db:migrate": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:migrate",
+    "db:migration:generate": "tsx --env-file .env ./node_modules/.bin/sequelize-cli migration:generate",
     "db:undo": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:migrate:undo",
     "db:model": "sequelize-cli model:generate",
     "db:seed": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:seed:all",
-    "db:seed:undo": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:seed:undo",
-    "db:seed:generate": "tsx --env-file .env ./node_modules/.bin/sequelize-cli seed:generate"
+    "db:generate": "tsx --env-file .env ./node_modules/.bin/sequelize-cli seed:generate",
+    "db:seed:undo": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:seed:undo:all"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
