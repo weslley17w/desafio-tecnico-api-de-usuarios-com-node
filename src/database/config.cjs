@@ -1,6 +1,4 @@
-import { Options } from 'sequelize';
-
-const sequelizeConfig: Options = {
+const sequelizeConfig = {
   dialect: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: Number(process.env.POSTGRES_PORT),
@@ -15,4 +13,4 @@ const sequelizeConfig: Options = {
   },
 };
 
-export default sequelizeConfig;
+module.exports = sequelizeConfig;

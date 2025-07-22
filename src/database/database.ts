@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { Sequelize, type Options } from 'sequelize';
-import { sequelizeConfig } from './config.js';
+import sequelizeConfig from './config.js';
 
 class Database {
   public readonly connection: Sequelize;

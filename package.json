@@ -10,11 +10,15 @@
     "format": "prettier --write .",
     "db:migrate": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:migrate",
     "db:undo": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:migrate:undo",
-    "db:model": "sequelize-cli model:generate"
+    "db:model": "sequelize-cli model:generate",
+    "db:seed": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:seed:all",
+    "db:seed:undo": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:seed:undo",
+    "db:seed:generate": "tsx --env-file .env ./node_modules/.bin/sequelize-cli seed:generate"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
     "@eslint/json": "^0.13.0",
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.3",
     "@types/node": "^24.0.13",
     "@types/sequelize": "^4.28.20",
@@ -29,6 +33,7 @@
     "node": ">=22.0.0"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3",
