@@ -1,6 +1,6 @@
 import { Options } from 'sequelize';
 
-export const sequelizeConfig: Options = {
+const sequelizeConfig: Options = {
   dialect: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: Number(process.env.POSTGRES_PORT),
@@ -14,3 +14,5 @@ export const sequelizeConfig: Options = {
     underscored: true,
   },
 };
+
+module.exports = sequelizeConfig;

@@ -1,13 +1,16 @@
 {
   "name": "desafio-tecnico-api-de-usuarios-com-node",
-  "type": "module",
   "main": "build/server.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "dev": "tsx --env-file .env src/server.ts",
     "watch": "tsx --watch --env-file .env src/server.ts",
     "start": "node --env-file .env build/server.js",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:migrate": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:migrate",
+    "db:undo": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:migrate:undo",
+    "db:model": "sequelize-cli model:generate"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
@@ -17,6 +20,7 @@
     "@types/sequelize": "^4.28.20",
     "eslint": "^9.31.0",
     "prettier": "^3.6.2",
+    "sequelize-cli": "^6.6.3",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.37.0"
