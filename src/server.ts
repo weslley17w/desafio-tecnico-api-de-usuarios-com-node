@@ -1,7 +1,8 @@
 import app from './app.js';
+import { env } from './config/env.js';
 import { db } from './database/database.js';
 
-const serverPort = process.env.SERVER_PORT || 3000;
+const serverPort = env.SERVER_PORT;
 
 (async () => {
   try {
