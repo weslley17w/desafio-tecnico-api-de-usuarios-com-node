@@ -8,6 +8,9 @@ import {
 } from 'sequelize';
 import { db } from '../database.js';
 
+export type userAttributes = InferAttributes<User>;
+export type UserCreationAttributes = InferCreationAttributes<User>;
+
 export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<string>;
   declare name: string;
