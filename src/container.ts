@@ -4,6 +4,9 @@ import { UserRepository } from './app/repositories/userRepository.js';
 import { AuthController } from './app/controllers/authController.js';
 import { AuthService } from './app/services/authService.js';
 import { AuthRepository } from './app/repositories/authRepository.js';
+import { ProductRepository } from './app/repositories/productRepository.js';
+import { ProductService } from './app/services/productService.js';
+import { ProductController } from './app/controllers/productController.js';
 
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
@@ -13,4 +16,8 @@ const authRepository = new AuthRepository();
 const authService = new AuthService(authRepository, userRepository);
 const authController = new AuthController(authService);
 
-export { userController, authController };
+const productRepository = new ProductRepository();
+const productService = new ProductService(productRepository);
+const productController = new ProductController(productService);
+
+export { userController, authController, productController };

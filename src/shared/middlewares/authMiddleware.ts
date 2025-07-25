@@ -7,7 +7,7 @@ interface IRequest extends Request {
 import jwt from 'jsonwebtoken';
 import { env } from '../../config/env.js';
 
-export const authMiddleware = (error: Error, req: IRequest, res: Response, next: NextFunction) => {
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
     const authorization = req.headers['authorization'];
 
@@ -15,7 +15,7 @@ export const authMiddleware = (error: Error, req: IRequest, res: Response, next:
 
     const [, token] = authorization.split(' ');
     const decodedToken = jwt.verify(token, env.AUTH_CONFIG_SECRET) as { id: string };
-    req.userId = decodedToken.id;
+    (req as IRequest).userId = decodedToken.id;
     return next();
   } catch {
     return res.status(401).json({ message: 'Token inválido.' });

@@ -35,6 +35,10 @@ const migration: Migration = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
+      deleted_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,

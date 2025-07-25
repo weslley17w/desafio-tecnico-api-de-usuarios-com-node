@@ -53,6 +53,7 @@ Product.init(attributes, {
   modelName: 'Product',
   tableName: 'products',
   timestamps: true,
+  paranoid: true,
 });
 
 export default Product;
