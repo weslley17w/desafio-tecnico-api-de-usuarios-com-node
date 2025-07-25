@@ -9,6 +9,9 @@ interface Seed {
 
 const seed: Seed = {
   up: async (): Promise<void> => {
+    await User.destroy({
+      where: {},
+    });
     const password: string = await hash('Senh@123', 10);
     await User.bulkCreate([
       {

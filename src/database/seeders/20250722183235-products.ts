@@ -8,6 +8,9 @@ interface Seed {
 
 const seed: Seed = {
   up: async (): Promise<void> => {
+    Product.destroy({
+      where: {},
+    });
     await Product.bulkCreate([
       {
         title: 'Handmade Fresh Table',

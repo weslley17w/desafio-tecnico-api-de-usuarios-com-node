@@ -1,20 +1,23 @@
 version: '3.7'
 services:
   database:
+    env_file: .env
     image: postgres
-    container_name: db-desafio-tecnico
+    container_name: ${DB_CONTAINER_NAME}
     restart: always
     ports:
-      - 5432:5432
-    env_file: .env
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - pgdata:/var/lib/db
     network_mode: host
   app:
+    depends_on:
+      - database
     build: .
-    container_name: desafio-tecnico
+    container_name: ${APP_CONTAINER_NAME}
+    command: sh -c "npm run db:migrate && npm run db:seed && npm run start"
     ports:
-      - 3000:3000
+      - ${SERVER_PORT}:${SERVER_PORT}
     volumes:
       - .:/app
     network_mode: host
