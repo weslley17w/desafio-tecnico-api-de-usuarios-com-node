@@ -9,7 +9,7 @@ export const userCreationSchema = z.object({
     .pipe(z.email({ message: 'Email invalido' })),
   password: z
     .string()
-    .nonempty({ message: 'Email é obrigatório' })
+    .nonempty({ message: 'Senha é obrigatório' })
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/, {
       message:
         'A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caractere especial.',

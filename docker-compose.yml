@@ -6,7 +6,7 @@ services:
     container_name: ${DB_CONTAINER_NAME}
     restart: always
     ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+      - ${POSTGRES_PORT}:5432
     volumes:
       - pgdata:/var/lib/db
     network_mode: host

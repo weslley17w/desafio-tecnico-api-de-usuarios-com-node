@@ -46,8 +46,6 @@ export class UserService {
   }
 
   public async findAll(): Promise<User[] | []> {
-    //validar paginacao
-
     return await this.userRepository.getAllUsers();
   }
 
