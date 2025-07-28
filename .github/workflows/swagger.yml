@@ -1,28 +1,39 @@
-name: Swagger
-
+name: Gerar e Publicar Swagger UI
 on:
   push:
     branches:
       - main
-
+    paths:
+      - 'swagger.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
-      - name: Checkout
+      - name: Checkout do Repositório
         uses: actions/checkout@v4
-      - name: Swagger ui action
-        id: swagger-ui-action
-        uses: pjoc-team/swagger-ui-action@v0.0.2
+        
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
         with:
-          dir: './'
-          pattern: '*.json'
-          debug: 'true'
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+          node-version: '20' 
+          
+      - name: Gerar HTML do Swagger UI
+        run: |
+          mkdir -p ./public
+          cp swagger.json ./public/
+          npx -y swagger-ui-dist@5.17.14 -o ./public
+          sed -i 's|url: "https://petstore3.swagger.io/api/v3/openapi.json"|url: "./swagger.json"|' ./public/index.html
+
+      - name: Upload do Artefato
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: swagger-ui
+          path: ./public
+
+      - name: Deploy no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
