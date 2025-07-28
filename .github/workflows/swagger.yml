@@ -1,4 +1,4 @@
-name: Gerar e Publicar Swagger UI
+name: Swagger gh-pages
 on:
   push:
     branches:
@@ -6,34 +6,28 @@ on:
     paths:
       - 'swagger.json'
   workflow_dispatch:
+
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do Repositório
         uses: actions/checkout@v4
-        
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20' 
-          
-      - name: Gerar HTML do Swagger UI
+
+      - name: Preparar Arquivos do Swagger UI
         run: |
+          curl -L -o swagger-ui.zip https://github.com/swagger-api/swagger-ui/archive/refs/tags/v5.17.14.zip
+          unzip swagger-ui.zip
           mkdir -p ./public
+          mv swagger-ui-5.17.14/dist/* ./public
           cp swagger.json ./public/
-          npx -y swagger-ui-dist@5.17.14 -o ./public
-          sed -i 's|url: "https://petstore3.swagger.io/api/v3/openapi.json"|url: "./swagger.json"|' ./public/index.html
+          sed -i 's|url: "https://petstore.swagger.io/v2/swagger.json"|url: "swagger.json"|' ./public/swagger-initializer.js
 
-      - name: Upload do Artefato
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy para o branch gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: ./public
-
-      - name: Deploy no GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
