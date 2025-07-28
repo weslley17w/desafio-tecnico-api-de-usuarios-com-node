@@ -1,22 +1,26 @@
-name: Deploy Swagger UI
+name: Swagger Docs
 on:
   push:
     branches:
-      - main
+      - main 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
-  deploy:
+  deploy-swagger-docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Generate Swagger UI
-        uses: swagger-api/swagger-ui-action@v1
+      - name: Generate single-file HTML docs
+        uses: peter-evans/swagger-yaml-to-html-action@v3
+        id: swagger-to-html
         with:
-          spec-file: swagger.json
-
+          input_path: 'swagger.json' 
+          output_path: 'docs/index.html'  
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./swagger-ui-dist
+          publish_dir: ./docs
