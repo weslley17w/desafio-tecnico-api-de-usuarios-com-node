@@ -1,1 +1,1 @@
-{"urls":[{"name":"swagger.json","url":"apis/swagger.json"}]}
+{"urls":[{"name":"package-lock.json","url":"apis/package-lock.json"},{"name":"package.json","url":"apis/package.json"},{"name":"swagger.json","url":"apis/swagger.json"},{"name":"tsconfig.json","url":"apis/tsconfig.json"}]}
