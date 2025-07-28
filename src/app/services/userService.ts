@@ -39,7 +39,7 @@ export class UserService {
           field: issue.path.join('.'),
           message: issue.message,
         }));
-        throw new HttpException(400, 'Erro de validação de dados. ', zodError);
+        throw new HttpException(400, 'Erro de validação de dados.', zodError);
       }
       throw error;
     }
@@ -62,7 +62,7 @@ export class UserService {
           field: issue.path.join('.'),
           message: issue.message,
         }));
-        throw new HttpException(400, 'Erro de validação de dados. ', zodError);
+        throw new HttpException(400, 'Erro de validação de dados.', zodError);
       }
       throw error;
     }
@@ -81,7 +81,7 @@ export class UserService {
           field: issue.path.join('.'),
           message: issue.message,
         }));
-        throw new HttpException(400, 'Erro de validação de dados. ', zodError);
+        throw new HttpException(400, 'Erro de validação de dados.', zodError);
       }
       throw error;
     }
@@ -111,7 +111,7 @@ export class UserService {
           field: issue.path.join('.'),
           message: issue.message,
         }));
-        throw new HttpException(400, 'Erro de validação de dados. ', zodError);
+        throw new HttpException(400, 'Erro de validação de dados.', zodError);
       }
       throw error;
     }
