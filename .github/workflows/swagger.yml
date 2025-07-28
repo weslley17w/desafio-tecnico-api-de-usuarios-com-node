@@ -1,4 +1,4 @@
-name: Swagger
+name: Deploy Swagger UI
 on:
   push:
     branches:
@@ -6,21 +6,17 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Swagger ui action
-        id: swagger-ui-action
-        uses: pjoc-team/swagger-ui-action@v0.0.2
+        uses: actions/checkout@v4
+
+      - name: Generate Swagger UI
+        uses: swagger-api/swagger-ui-action@v1
         with:
-          dir: './'
-          pattern: '*.json'
-          debug: 'true'
+          spec-file: swagger.json
+
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: swagger-ui
+          publish_dir: ./swagger-ui-dist
