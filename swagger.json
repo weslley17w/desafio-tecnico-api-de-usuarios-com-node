@@ -1,0 +1,8 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Api - Desafio tecnico",
+    "description": "Api de usuarios e produtos para um desafio tecnico.",
+    "version": "1.0.0"
+  }
+}
