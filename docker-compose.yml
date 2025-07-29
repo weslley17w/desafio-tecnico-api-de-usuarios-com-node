@@ -1,26 +1,39 @@
 version: '3.7'
 services:
-  database:
+  postgres:
     env_file: .env
     image: postgres
-    container_name: ${DB_CONTAINER_NAME}
+    container_name: ${POSTGRES_CONTAINER_NAME}
     restart: always
     ports:
       - ${POSTGRES_PORT}:5432
     volumes:
       - pgdata:/var/lib/db
     network_mode: host
+  redis:
+    env_file: .env
+    image: redis
+    container_name: ${REDIS_CONTAINER_NAME}
+    command: >
+      -- requirepass ${REDIS_PASSWORD}
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - redis_data:/data
+    network_mode: host
   app:
     depends_on:
-      - database
+      - postgres
+      - redis
     build: .
     container_name: ${APP_CONTAINER_NAME}
-    command: sh -c "npm run db:migrate && npm run db:seed && npm run start"
+    command: sh -c "npm run db:migrate && npm run db:seed && npm run watch"
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     volumes:
       - .:/app
     network_mode: host
 volumes:
+  redis_data:
   pgdata:
     driver: local

@@ -9,4 +9,9 @@ class Database {
   }
 }
 
+export const connectDatabase = async () => {
+  await new Database().connection.authenticate();
+  console.log('Database connection has been established successfully.');
+};
+
 export const db = new Database().connection;

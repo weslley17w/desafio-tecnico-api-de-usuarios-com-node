@@ -8,6 +8,9 @@ const envSchema = z.object({
   POSTGRES_USER: z.string().min(1),
   POSTGRES_PASSWORD: z.string().min(1),
   POSTGRES_DB: z.string().min(1),
+  REDIS_PASSWORD: z.string().min(1),
+  REDIS_HOST: z.string().min(1),
+  REDIS_PORT: z.coerce.number().int().positive(),
 });
 
 const parcedEnv = envSchema.safeParse(process.env);
