@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/userService.js';
+import { userUpdateDTO } from '../validadators/userSchema.js';
 
 export class UserController {
   private readonly userService: UserService;
@@ -14,8 +15,13 @@ export class UserController {
   };
 
   public findAll = async (req: Request, res: Response): Promise<Response> => {
-    const user = await this.userService.findAll();
-    return res.status(200).json(user);
+    const { page, limit, ...filters } = req.query;
+    const users = await this.userService.findPaginatedFiltered(
+      Number(page) || 1,
+      Number(limit) || 10,
+      filters as Partial<userUpdateDTO>,
+    );
+    return res.status(200).json(users);
   };
 
   public findById = async (req: Request, res: Response): Promise<Response> => {

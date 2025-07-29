@@ -1,5 +1,6 @@
 import { createUserDTO, userUpdateDTO } from '../validadators/userSchema.js';
 import { User } from '../../database/models/index.js';
+import { redisClient } from '../../shared/db/redis.js';
 
 export class UserRepository {
   public async create(data: createUserDTO): Promise<User> {
@@ -14,8 +15,27 @@ export class UserRepository {
     return await User.findOne({ where: { id } });
   }
 
+  public async findByIdCached(id: string): Promise<User | null> {
+    const cachedUser = await redisClient.get(id);
+    return cachedUser ? JSON.parse(cachedUser) : null;
+  }
+
   public async getAllUsers(): Promise<User[] | []> {
     return await User.findAll();
+  }
+
+  public async getAllUsersPafinated(
+    page: number,
+    limit: number,
+    filters: Partial<userUpdateDTO>,
+  ): Promise<{ users: User[]; total: number }> {
+    const { rows, count } = await User.findAndCountAll({
+      where: filters,
+      limit,
+      offset: (page - 1) * limit,
+    });
+
+    return { users: rows, total: count };
   }
 
   public async deleteUser(id: string): Promise<void> {

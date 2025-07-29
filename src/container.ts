@@ -7,9 +7,13 @@ import { AuthRepository } from './app/repositories/authRepository.js';
 import { ProductRepository } from './app/repositories/productRepository.js';
 import { ProductService } from './app/services/productService.js';
 import { ProductController } from './app/controllers/productController.js';
+import { CacheService } from './shared/sevices/cacheService.js';
+import { redisClient } from './shared/db/redis.js';
+
+const cacheService = new CacheService(redisClient);
 
 const userRepository = new UserRepository();
-const userService = new UserService(userRepository);
+const userService = new UserService(userRepository, cacheService);
 const userController = new UserController(userService);
 
 const authRepository = new AuthRepository();
