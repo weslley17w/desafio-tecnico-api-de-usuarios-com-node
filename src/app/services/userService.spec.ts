@@ -183,6 +183,7 @@ describe('Find User By Id', () => {
     const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
     await expect(userService.findById({ id: invalidId })).rejects.toThrow('Generic error');
   });
+  
 });
 
 describe('Delete User By Id', () => {

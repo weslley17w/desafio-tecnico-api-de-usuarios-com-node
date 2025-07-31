@@ -6,6 +6,7 @@ import {
   productSchemaDTO,
   productDeleteSchema,
   productDeleteSchemaDTO,
+  productUpdateSchema,
 } from '../validadators/productSchema.js';
 import { HttpException } from '../../shared/erros/HttpExeption.js';
 import { CacheService } from '../../shared/sevices/cacheService.js';
@@ -63,6 +64,7 @@ export class ProductService {
           field: issue.path.join('.'),
           message: issue.message,
         }));
+
         throw new HttpException(400, 'Erro de validação de dados.', zodError);
       }
       throw error;
@@ -108,6 +110,7 @@ export class ProductService {
 
   public async update(id: string, data: Partial<productSchemaDTO>, userId: string): Promise<Product | null> {
     try {
+      productUpdateSchema.parse(data);
       const product = await this.productRepository.findById(id);
       const cacheId = productKeyPrefix.product(id);
 

@@ -7,8 +7,14 @@ export const productSchema = z.object({
   created_by: z.uuidv4().nonempty({ message: 'ID do criador é obrigatório' }),
 });
 
+export const productUpdateSchema = z.object({
+  title: z.string().optional(),
+  price: z.number().positive({ message: 'Preço deve ser um número positivo' }).optional(),
+  description: z.string().max(1000, { message: 'Descrição não pode exceder 1000 caracteres' }).optional(),
+});
+
 export const productDeleteSchema = z.object({
-  id: z.string().nonempty({ message: 'Id é obrigatório' }),
+  id: z.uuid().nonempty({ message: 'Id é obrigatório' }),
 });
 
 export type productSchemaDTO = z.infer<typeof productSchema>;
