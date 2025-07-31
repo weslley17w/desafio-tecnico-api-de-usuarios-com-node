@@ -72,7 +72,7 @@ export class UserService {
     try {
       userFindByIdSchema.parse({ id });
       const cacheId = cacheKeyPrefix.user(id);
-      const cachedUser = await this.userRepository.findByIdCached(cacheId);
+      const cachedUser = await this.cacheService.get<User>(cacheId);
 
       if (cachedUser) {
         return cachedUser;
@@ -132,8 +132,9 @@ export class UserService {
       }
 
       const user = await this.userRepository.update(id, dataHashed);
+      await this.cacheService.del(cacheKeyPrefix.user(id));
       if (!user) throw new HttpException(404, 'Usuário não encontrado.');
-      await this.cacheService.set(cacheKeyPrefix.user(id), user, 86400);
+
       return user;
     } catch (error) {
       if (error instanceof ZodError) {

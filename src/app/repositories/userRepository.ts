@@ -1,6 +1,5 @@
 import { createUserDTO, userUpdateDTO } from '../validadators/userSchema.js';
 import { User } from '../../database/models/index.js';
-import { redisClient } from '../../shared/db/redis.js';
 
 export class UserRepository {
   public async create(data: createUserDTO): Promise<User> {
@@ -13,11 +12,6 @@ export class UserRepository {
 
   public async findById(id: string): Promise<User | null> {
     return await User.findOne({ where: { id } });
-  }
-
-  public async findByIdCached(id: string): Promise<User | null> {
-    const cachedUser = await redisClient.get(id);
-    return cachedUser ? JSON.parse(cachedUser) : null;
   }
 
   public async getAllUsers(): Promise<User[] | []> {

@@ -28,7 +28,6 @@ beforeEach(() => {
     findByEmail: jest.fn(),
     create: jest.fn(),
     findById: jest.fn(),
-    findByIdCached: jest.fn(),
     getAllUsersPaginated: jest.fn(),
     deleteUser: jest.fn(),
     getAllUsers: jest.fn(),
@@ -156,7 +155,6 @@ describe('Find User By Id', () => {
     const userId = '123';
 
     cacheServiceMock.get = jest.fn().mockResolvedValue(userMock);
-    userRepositoryMock.findByIdCached = jest.fn().mockResolvedValue(userMock);
     const result = await userService.findById({ id: userId });
     expect(result).toEqual(userMock);
   });
