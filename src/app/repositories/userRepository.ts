@@ -7,7 +7,7 @@ export class UserRepository {
     return User.create(data);
   }
 
-  public async findByEmai(email: string): Promise<User | null> {
+  public async findByEmail(email: string): Promise<User | null> {
     return await User.findOne({ where: { email } });
   }
 
@@ -24,7 +24,7 @@ export class UserRepository {
     return await User.findAll();
   }
 
-  public async getAllUsersPafinated(
+  public async getAllUsersPaginated(
     page: number,
     limit: number,
     filters: Partial<userUpdateDTO>,

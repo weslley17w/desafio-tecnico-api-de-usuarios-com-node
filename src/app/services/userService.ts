@@ -34,7 +34,7 @@ export class UserService {
     try {
       const validData = userCreationSchema.parse(data);
       const hashedPassword = await hash(data.password, 10);
-      const emailExists = await this.userRepository.findByEmai(data.email);
+      const emailExists = await this.userRepository.findByEmail(data.email);
 
       if (emailExists) throw new HttpException(400, 'Email já está em uso');
 
@@ -54,10 +54,6 @@ export class UserService {
     }
   }
 
-  public async findAll(): Promise<User[] | []> {
-    return await this.userRepository.getAllUsers();
-  }
-
   public async findPaginatedFiltered(
     page: number,
     limit: number,
@@ -67,7 +63,7 @@ export class UserService {
     const cachedUsers = await this.cacheService.get<{ users: User[]; total: number }>(cacheKey);
     if (cachedUsers) return cachedUsers;
 
-    const users = await this.userRepository.getAllUsersPafinated(page, limit, filters);
+    const users = await this.userRepository.getAllUsersPaginated(page, limit, filters);
     await this.cacheService.set(cacheKey, users, 120);
     return users;
   }
