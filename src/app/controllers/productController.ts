@@ -28,11 +28,13 @@ export class ProductController {
   }
 
   public async findPaginatedFiltered(req: Request, res: Response): Promise<Response | void> {
+    const userId = (req as IRequest).userId;
     const { page, limit, ...filters } = req.query;
     const result = await this.productService.findPaginatedFiltered({
       page: Number(page) || 1,
       limit: Number(limit) || 10,
       filters: filters as Partial<productSchemaDTO>,
+      userId,
     });
     return res.status(200).json(result);
   }

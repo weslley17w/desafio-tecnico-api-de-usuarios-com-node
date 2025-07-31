@@ -21,7 +21,7 @@ const authService = new AuthService(authRepository, userRepository);
 const authController = new AuthController(authService);
 
 const productRepository = new ProductRepository();
-const productService = new ProductService(productRepository);
+const productService = new ProductService(productRepository, cacheService);
 const productController = new ProductController(productService);
 
 export { userController, authController, productController };

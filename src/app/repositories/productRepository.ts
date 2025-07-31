@@ -16,9 +16,13 @@ export class ProductRepository {
     page: number,
     limit: number,
     filters: Partial<productSchemaDTO>,
+    created_by: string,
   ): Promise<{ products: Product[]; total: number }> {
     const { count, rows } = await Product.findAndCountAll({
-      where: filters,
+      where: {
+        ...filters,
+        created_by,
+      },
       limit,
       offset: (page - 1) * limit,
     });
