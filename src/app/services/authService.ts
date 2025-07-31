@@ -22,7 +22,7 @@ export class AuthService {
     try {
       authLoginSchema.parse(data);
 
-      const user = await this.userRepository.findByEmai(data.email);
+      const user = await this.userRepository.findByEmail(data.email);
 
       if (!user) throw new HttpException(404, 'Usuário ou senha inválidos.');
       const isPasswordValid = await compare(data.password, user.password);
@@ -64,7 +64,7 @@ export class AuthService {
     const isExpired = dayjs(dayjs()).isAfter(refreshToken.expires_at);
     if (isExpired) {
       await refreshToken.destroy();
-      throw new HttpException(400, 'Refresh Token expirado!');
+      throw new HttpException(400, 'Refresh Token invalido!');
     }
 
     const accesToken = jwt.sign({ id: refreshToken.creator.id }, env.AUTH_CONFIG_SECRET, {
