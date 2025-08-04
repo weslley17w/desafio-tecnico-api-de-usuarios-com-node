@@ -2,7 +2,6 @@ import request from 'supertest';
 import app from '../../app.js';
 import { User } from '../../database/models/index.js';
 import { redisClient } from '../../shared/db/redis.js';
-import { response } from 'express';
 
 let mockUser: object;
 
@@ -18,6 +17,7 @@ let mockUsers = async () => {
   }
   await User.bulkCreate(users);
 };
+
 beforeEach(async () => {
   await User.truncate({ cascade: true });
   await redisClient.flushAll();
@@ -118,13 +118,6 @@ describe('List User', () => {
 });
 
 describe('List User By ID', () => {
-  it('should return the correct user', async () => {
-    const response = await request(app).post('/users').send(mockUser);
-    const userId = response.body.id;
-    const response2 = await request(app).get(`/users/${userId}`);
-    expect(response2.body).toMatchObject(response.body);
-  });
-
   it('should return the correct user', async () => {
     const response = await request(app).post('/users').send(mockUser);
     const userId = response.body.id;

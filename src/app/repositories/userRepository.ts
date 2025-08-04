@@ -7,7 +7,7 @@ export class UserRepository {
   }
 
   public async findByEmail(email: string): Promise<User | null> {
-    return await User.findOne({ where: { email } });
+    return await User.unscoped().findOne({ where: { email } });
   }
 
   public async findById(id: string): Promise<User | null> {
