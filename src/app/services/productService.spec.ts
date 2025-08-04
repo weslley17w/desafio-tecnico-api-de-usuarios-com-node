@@ -184,12 +184,6 @@ describe('ProductService', () => {
       await expect(service.update('test-id', {}, productMock.created_by)).rejects.toThrow(HttpException);
     });
 
-    it('should throw 404 if update returns null', async () => {
-      productRepository.findById = jest.fn().mockResolvedValue(productMock);
-      (productRepository.Update as jest.Mock).mockResolvedValue(null);
-      await expect(service.update('test-id', {}, productMock.created_by)).rejects.toThrow(HttpException);
-    });
-
     it('should update product with invalid data', async () => {
       productUpdateSchema.parse = jest.fn().mockImplementation(() => {
         throw new ZodError([

@@ -35,9 +35,7 @@ export class ProductRepository {
 
   public async Update(id: string, data: Partial<productSchemaDTO>): Promise<Product | null> {
     const product = await Product.findByPk(id);
-    if (!product) {
-      return null;
-    }
-    return product.update(data);
+    if (product) return product.update(data);
+    else return null;
   }
 }

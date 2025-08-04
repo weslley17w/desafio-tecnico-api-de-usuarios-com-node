@@ -124,10 +124,6 @@ export class ProductService {
 
       const updatedProduct = await this.productRepository.Update(id, data);
 
-      if (!updatedProduct) {
-        throw new HttpException(404, 'Produto não encontrado para atualização.');
-      }
-
       await this.cacheService.del(cacheId);
       return updatedProduct;
     } catch (error) {
