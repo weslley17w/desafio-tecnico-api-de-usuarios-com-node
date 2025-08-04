@@ -13,6 +13,10 @@
     {
       "name": "User",
       "description": "Rota para gerenciamento de usuários"
+    },
+    {
+      "name": "Product",
+      "description": "Rota para gerenciamento de produtos"
     }
   ],
   "paths": {
@@ -91,11 +95,6 @@
           "User"
         ],
         "summary": "Inserir Usuário",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -133,11 +132,6 @@
           "User"
         ],
         "summary": "Obter Usuários",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "page",
@@ -169,11 +163,6 @@
           "User"
         ],
         "summary": "Obter usuário por ID",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -203,11 +192,6 @@
           "User"
         ],
         "summary": "Atualizar Usuário",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -260,6 +244,209 @@
           "User"
         ],
         "summary": "Deletar Usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "221b7203-2c10-4027-b30f-7e5d74edf57c"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Usuário deletado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação de dados."
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          }
+        }
+      }
+    },
+    "/products": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Inserir Produto",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Handmade Fresh Table"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 1222.2
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Andy shoes are designed to keeping in..."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produto criado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação de dados."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Obter Produtos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 5
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de produtos"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Obter produto por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "4c46c68d-36f4-471e-9846-e34a61428bce"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do produto"
+          },
+          "400": {
+            "description": "Erro de validação de dados."
+          },
+          "404": {
+            "description": "Produto não encontrado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Atualizar Produto",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "3fc75d8d-e2ef-4004-a8d1-935187a7fd51"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Handmade Fresh Table"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 1222.2
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Andy shoes are designed to keeping in..."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto atualizado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação de dados."
+          },
+          "403": {
+            "description": "Você não tem permissão para atualizar este produto."
+          },
+          "404": {
+            "description": "Produto não encontrado."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Deletar Produto",
         "security": [
           {
             "bearerAuth": []
@@ -279,7 +466,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Usuário deletado com sucesso"
+            "description": "Produto deletado com sucesso"
           },
           "400": {
             "description": "Erro de validação de dados."
