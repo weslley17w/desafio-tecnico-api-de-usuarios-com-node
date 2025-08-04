@@ -14,10 +14,6 @@ export class UserRepository {
     return await User.findOne({ where: { id } });
   }
 
-  public async getAllUsers(): Promise<User[] | []> {
-    return await User.findAll();
-  }
-
   public async getAllUsersPaginated(
     page: number,
     limit: number,

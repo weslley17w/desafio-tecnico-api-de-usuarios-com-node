@@ -30,7 +30,7 @@ export class UserService {
     this.cacheService = cacheService;
   }
 
-  public async create(data: createUserDTO): Promise<User> {
+  public async create(data: createUserDTO): Promise<Partial<User>> {
     try {
       const validData = userCreationSchema.parse(data);
       const hashedPassword = await hash(data.password, 10);
@@ -38,10 +38,14 @@ export class UserService {
 
       if (emailExists) throw new HttpException(400, 'Email já está em uso');
 
-      return this.userRepository.create({
+      const user = await this.userRepository.create({
         ...validData,
         password: hashedPassword,
       });
+
+      const { password, ...userWithoutPasword } = user.toJSON();
+
+      return userWithoutPasword;
     } catch (error) {
       if (error instanceof ZodError) {
         const zodError = error.issues.map((issue) => ({
@@ -68,7 +72,7 @@ export class UserService {
     return users;
   }
 
-  public async findById({ id }: userFindByIdDTO): Promise<User | null> {
+  public async findById({ id }: userFindByIdDTO): Promise<Partial<User> | null> {
     try {
       userFindByIdSchema.parse({ id });
       const cacheId = cacheKeyPrefix.user(id);
@@ -80,7 +84,6 @@ export class UserService {
 
       const user = await this.userRepository.findById(id);
       if (user === null) throw new HttpException(404, 'Usuário não encontrado.');
-
       await this.cacheService.set(cacheId, user, 86400);
 
       return user;
@@ -116,7 +119,7 @@ export class UserService {
     }
   }
 
-  public async update({ id }: userUpdateIdParamDTO, data: userUpdateDTO): Promise<User> {
+  public async update({ id }: userUpdateIdParamDTO, data: userUpdateDTO): Promise<Partial<User>> {
     try {
       userDeleteSchema.parse({ id });
       userUpdateSchema.parse(data);
@@ -134,8 +137,9 @@ export class UserService {
       const user = await this.userRepository.update(id, dataHashed);
       await this.cacheService.del(cacheKeyPrefix.user(id));
       if (!user) throw new HttpException(404, 'Usuário não encontrado.');
+      const { password, ...userWithoutPasword } = user.toJSON();
 
-      return user;
+      return userWithoutPasword;
     } catch (error) {
       if (error instanceof ZodError) {
         const zodError = error.issues.map((issue) => ({

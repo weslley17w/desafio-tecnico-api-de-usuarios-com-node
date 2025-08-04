@@ -46,11 +46,11 @@ export const userUpdateSchema = z
   );
 
 export const userDeleteSchema = z.object({
-  id: z.string().nonempty({ message: 'Id é obrigatório' }),
+  id: z.uuidv4().nonempty({ message: 'Id é obrigatório' }),
 });
 
 export const userFindByIdSchema = z.object({
-  id: z.string().nonempty({ message: 'Id é obrigatório' }),
+  id: z.uuidv4().nonempty({ message: 'Id é obrigatório' }),
 });
 
 export const userUpdateIdParam = z.object({

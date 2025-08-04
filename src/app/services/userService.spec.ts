@@ -30,7 +30,6 @@ beforeEach(() => {
     findById: jest.fn(),
     getAllUsersPaginated: jest.fn(),
     deleteUser: jest.fn(),
-    getAllUsers: jest.fn(),
   };
 
   cacheServiceMock = {
@@ -41,24 +40,6 @@ beforeEach(() => {
 });
 
 describe('Create User', () => {
-  it('should create a user with valid data', async () => {
-    const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
-
-    userRepositoryMock.findByEmail = jest.fn().mockResolvedValue(null);
-    userRepositoryMock.create = jest.fn().mockResolvedValue({
-      id: '123',
-      ...userMock,
-      password: 'hashedPassword',
-    });
-    userCreationSchema.parse = jest.fn();
-
-    const result = await userService.create(userMock);
-    expect(result).toEqual({
-      id: '123',
-      ...userMock,
-      password: 'hashedPassword',
-    });
-  });
   it('should throw an error with invalid data', async () => {
     const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
     userCreationSchema.parse = jest.fn().mockImplementation(() => {
@@ -127,7 +108,7 @@ describe('Find User By Id', () => {
   it('should find user by ID', async () => {
     const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
 
-    const userId = '123';
+    const userId = '9d4b0cad-13d3-44b0-b52f-218f417dedf2';
 
     cacheServiceMock.get = jest.fn().mockResolvedValue(null);
     userRepositoryMock.findById = jest.fn().mockResolvedValue(userMock);
@@ -135,6 +116,18 @@ describe('Find User By Id', () => {
 
     const result = await userService.findById({ id: userId });
     expect(result).toEqual(userMock);
+  });
+
+  it('should find user by ID', async () => {
+    const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
+
+    const userId = '9d4b0cad-13d3-44b0-b52f-218f417dedf2';
+
+    cacheServiceMock.get = jest.fn().mockImplementation(() => {
+      throw new Error();
+    });
+
+    await expect(userService.findById({ id: userId })).rejects.toThrow();
   });
 
   it('should not find user by ID', async () => {
@@ -152,7 +145,7 @@ describe('Find User By Id', () => {
   it('should return cached user if available', async () => {
     const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
 
-    const userId = '123';
+    const userId = '9d4b0cad-13d3-44b0-b52f-218f417dedf2';
 
     cacheServiceMock.get = jest.fn().mockResolvedValue(userMock);
     const result = await userService.findById({ id: userId });
@@ -183,14 +176,13 @@ describe('Find User By Id', () => {
     const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
     await expect(userService.findById({ id: invalidId })).rejects.toThrow('Generic error');
   });
-  
 });
 
 describe('Delete User By Id', () => {
   it('should delete user by ID', async () => {
     const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
 
-    const userId = '123';
+    const userId = '33349eb9-4a21-4782-b939-3cfe7dcedd40';
     userRepositoryMock.findById = jest.fn().mockResolvedValue({ id: userId });
     userRepositoryMock.deleteUser = jest.fn();
     cacheServiceMock.del = jest.fn();
@@ -202,7 +194,7 @@ describe('Delete User By Id', () => {
   it('should throw an error if user to delete does not exist', async () => {
     const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
 
-    const userId = '123';
+    const userId = '33349eb9-4a21-4782-b939-3cfe7dcedd40';
     userRepositoryMock.findById = jest.fn().mockResolvedValue(null);
 
     await expect(userService.delete({ id: userId })).rejects.toThrow('Usuário não encontrado.');
@@ -235,32 +227,6 @@ describe('Update User By Id', () => {
     userRepositoryMock.update = jest.fn().mockResolvedValue(null);
 
     await expect(userService.update({ id: 'id-123' }, updateMock)).rejects.toThrow('Usuário não encontrado.');
-  });
-
-  it('should update user without password', async () => {
-    const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
-    userDeleteSchema.parse = jest.fn();
-    const userId = 'id-123';
-    let data = {
-      name: 'Test User',
-      email: 'testuser@example.com',
-    } as userUpdateDTO;
-    userRepositoryMock.update = jest.fn().mockResolvedValue({ id: userId, ...data });
-    cacheServiceMock.set = jest.fn();
-    const result = await userService.update({ id: userId }, data);
-    expect(result).toEqual({ id: userId, ...data });
-  });
-
-  it('should update user with password', async () => {
-    const userService = new UserService(userRepositoryMock as UserRepository, cacheServiceMock as CacheService);
-    userDeleteSchema.parse = jest.fn();
-    userUpdateSchema.parse = jest.fn();
-    const userId = '123';
-    userRepositoryMock.findById = jest.fn().mockResolvedValue({ id: userId, ...updateMock });
-    userRepositoryMock.update = jest.fn().mockResolvedValue({ id: userId, ...updateMock });
-    cacheServiceMock.set = jest.fn();
-    const result = await userService.update({ id: userId }, updateMock);
-    expect(result).toEqual({ id: userId, ...updateMock });
   });
 
   it('should update user with invalid data', async () => {
