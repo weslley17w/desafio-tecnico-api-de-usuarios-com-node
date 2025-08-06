@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const envSchema = z.object({
+  NODE_ENV: z.string().min(1),
   SERVER_PORT: z.coerce.number().int().positive(),
   AUTH_CONFIG_SECRET: z.string().min(1),
   POSTGRES_HOST: z.string().min(1),
