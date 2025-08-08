@@ -18,7 +18,7 @@ import { CacheService } from '../../shared/sevices/cacheService.js';
 
 const cacheKeyPrefix = {
   user: (id: string) => `user:${id}`,
-  listUsers: (page: number, limit: number) => `users:page:${page}:limit:${limit}`,
+  listUsers: (page: number, limit: number, filter: string) => `users:page:${page}:limit:${limit}:filter:${filter}`,
 };
 
 export class UserService {
@@ -63,13 +63,25 @@ export class UserService {
     limit: number,
     filters: Partial<userUpdateDTO>,
   ): Promise<{ users: User[]; total: number }> {
-    const cacheKey = cacheKeyPrefix.listUsers(page, limit);
-    const cachedUsers = await this.cacheService.get<{ users: User[]; total: number }>(cacheKey);
-    if (cachedUsers) return cachedUsers;
+    try {
+      const filter = JSON.stringify(filters);
+      const cacheKey = cacheKeyPrefix.listUsers(page, limit, filter);
+      const cachedUsers = await this.cacheService.get<{ users: User[]; total: number }>(cacheKey);
+      if (cachedUsers) return cachedUsers;
 
-    const users = await this.userRepository.getAllUsersPaginated(page, limit, filters);
-    await this.cacheService.set(cacheKey, users, 120);
-    return users;
+      const users = await this.userRepository.getAllUsersPaginated(page, limit, filters);
+      await this.cacheService.set(cacheKey, users, 120);
+      return users;
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const zodError = error.issues.map((issue) => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+        }));
+        throw new HttpException(400, 'Erro de validação de dados.', zodError);
+      }
+      throw error;
+    }
   }
 
   public async findById({ id }: userFindByIdDTO): Promise<Partial<User> | null> {

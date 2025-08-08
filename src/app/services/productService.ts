@@ -7,13 +7,15 @@ import {
   productDeleteSchema,
   productDeleteSchemaDTO,
   productUpdateSchema,
+  paginatedProductSchema,
 } from '../validadators/productSchema.js';
 import { HttpException } from '../../shared/erros/HttpExeption.js';
 import { CacheService } from '../../shared/sevices/cacheService.js';
 
 const productKeyPrefix = {
   product: (id: string) => `product:${id}`,
-  productUsers: (page: number, limit: number) => `product:page:${page}:limit:${limit}`,
+  productList: (page: number, limit: number, filters: string, userId: string) =>
+    `product:user:${userId}:page:${page}:limit:${limit}:filter:${filters}`,
 };
 
 export class ProductService {
@@ -82,12 +84,25 @@ export class ProductService {
     filters: Partial<productSchemaDTO>;
     userId: string;
   }): Promise<{ products: Product[]; total: number }> {
-    const cacheKey = productKeyPrefix.productUsers(page, limit);
-    const cacheData = await this.cacheService.get<{ products: Product[]; total: number }>(cacheKey);
-    if (cacheData) return cacheData;
-    const result = await this.productRepository.findPaginatedFiltered(page, limit, filters, userId);
-    await this.cacheService.set(cacheKey, result, 120);
-    return result;
+    try {
+      paginatedProductSchema.parse({ page, limit, filters, userId });
+      const filter = JSON.stringify(filters);
+      const cacheKey = productKeyPrefix.productList(page, limit, filter, userId);
+      const cacheData = await this.cacheService.get<{ products: Product[]; total: number }>(cacheKey);
+      if (cacheData) return cacheData;
+      const result = await this.productRepository.findPaginatedFiltered(page, limit, filters, userId);
+      await this.cacheService.set(cacheKey, result, 120);
+      return result;
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const zodError = error.issues.map((issue) => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+        }));
+        throw new HttpException(400, 'Erro de validação de dados.', zodError);
+      }
+      throw error;
+    }
   }
 
   public async findById(id: string): Promise<Product | null> {

@@ -16,7 +16,7 @@
     "db:seed:generate": "tsx --env-file .env ./node_modules/.bin/sequelize-cli seed:generate",
     "db:seed:undo": "tsx --env-file .env ./node_modules/.bin/sequelize-cli db:seed:undo:all",
     "jest:pre:test": "NODE_ENV=test tsx --env-file .env ./node_modules/.bin/sequelize-cli db:migrate",
-    "test": "NODE_ENV=test npm run jest:pre:test && node --env-file .env ./node_modules/.bin/jest --runInBand --detectOpenHandles"
+    "test": "npm run jest:pre:test && NODE_ENV=test node --env-file .env ./node_modules/.bin/jest --runInBand --detectOpenHandles"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",

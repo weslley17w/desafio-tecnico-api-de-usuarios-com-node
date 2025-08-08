@@ -77,15 +77,20 @@ describe('userService', () => {
       const filters = {};
       const usersData = { users: [], total: 0 };
 
+      const filter = JSON.stringify(filters);
       cacheServiceMock.get = jest.fn().mockResolvedValue(null);
       userRepositoryMock.getAllUsersPaginated = jest.fn().mockResolvedValue(usersData);
       cacheServiceMock.set = jest.fn();
 
       const result = await userService.findPaginatedFiltered(page, limit, filters);
       expect(result).toEqual(usersData);
-      expect(cacheServiceMock.get).toHaveBeenCalledWith(`users:page:${page}:limit:${limit}`);
+      expect(cacheServiceMock.get).toHaveBeenCalledWith(`users:page:${page}:limit:${limit}:filter:${filter}`);
       expect(userRepositoryMock.getAllUsersPaginated).toHaveBeenCalledWith(page, limit, filters);
-      expect(cacheServiceMock.set).toHaveBeenCalledWith(`users:page:${page}:limit:${limit}`, usersData, 120);
+      expect(cacheServiceMock.set).toHaveBeenCalledWith(
+        `users:page:${page}:limit:${limit}:filter:${filter}`,
+        usersData,
+        120,
+      );
     });
 
     it('should return cached users if available', async () => {
@@ -95,12 +100,13 @@ describe('userService', () => {
       const limit = 10;
       const filters = {};
       const cachedUsersData = { users: [], total: 0 };
+      const filter = JSON.stringify(filters);
 
       cacheServiceMock.get = jest.fn().mockResolvedValue(cachedUsersData);
 
       const result = await userService.findPaginatedFiltered(page, limit, filters);
       expect(result).toEqual(cachedUsersData);
-      expect(cacheServiceMock.get).toHaveBeenCalledWith(`users:page:${page}:limit:${limit}`);
+      expect(cacheServiceMock.get).toHaveBeenCalledWith(`users:page:${page}:limit:${limit}:filter:${filter}`);
       expect(userRepositoryMock.getAllUsersPaginated).not.toHaveBeenCalled();
     });
   });
